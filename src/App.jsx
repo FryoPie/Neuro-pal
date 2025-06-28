@@ -3,14 +3,25 @@ import MoodEntry from './components/MoodEntry';
 import TaskCard from './components/TaskCard';
 import Toast from './components/Toast';
 import ThemeToggle from './components/ThemeToggle';
+import EnergyTracker from './components/EnergyTracker';
+import SensoryCheckIn from './components/SensoryCheckIn';
+import MoodReflection from './components/MoodReflection';
+import CompassionateChat from './components/CompassionateChat';
+import TransitionHelper from './components/TransitionHelper';
 
 function App() {
   const [activeTab, setActiveTab] = useState('routine');
   const [currentMood, setCurrentMood] = useState('');
+  const [currentEnergy, setCurrentEnergy] = useState(3);
   const [moodHistory, setMoodHistory] = useState([]);
+  const [moodReflection, setMoodReflection] = useState('');
+  const [sensoryNeeds, setSensoryNeeds] = useState([]);
   const [isPlayingSound, setIsPlayingSound] = useState(false);
   const [toast, setToast] = useState(null);
   const [theme, setTheme] = useState('light');
+  const [streakCount, setStreakCount] = useState(0);
+  const [showTransitionHelper, setShowTransitionHelper] = useState(false);
+  const [nextTask, setNextTask] = useState('');
   
   const [tasks, setTasks] = useState([
     { id: 1, name: 'Take morning medication', done: false },
@@ -21,36 +32,83 @@ function App() {
   ]);
 
   const motivationalQuotes = [
-    "Your neurodivergent brain is a superpower! 🌟",
-    "Progress, not perfection. You're doing great! 💪",
-    "Every small step counts. Be proud of yourself! 🎯",
-    "Your unique perspective makes the world brighter! 🌈",
-    "Take it one moment at a time. You've got this! ✨"
+    "Your neurodivergent brain is a superpower, and today you're showing just how amazing it is! 🌟",
+    "Progress isn't about being perfect - it's about being kind to yourself along the way 💜",
+    "Every small step you take matters more than you know. You're doing beautifully! 🌸",
+    "Your unique way of seeing the world makes it brighter for everyone around you 🌈",
+    "Take it one gentle moment at a time. You have everything you need within you ✨",
+    "Your sensitivity is not a weakness - it's a gift that helps you understand the world deeply 🦋"
   ];
 
   const [currentQuote] = useState(
     motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]
   );
 
+  // Load streak from localStorage
+  useEffect(() => {
+    const savedStreak = localStorage.getItem('neuropal-streak');
+    if (savedStreak) {
+      setStreakCount(parseInt(savedStreak));
+    }
+  }, []);
+
   // Apply theme to document root
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  // Check for transition helper trigger
+  useEffect(() => {
+    const completedTasks = tasks.filter(task => task.done).length;
+    const incompleteTasks = tasks.filter(task => !task.done);
+    
+    if (completedTasks > 0 && incompleteTasks.length > 0) {
+      const next = incompleteTasks[0];
+      if (nextTask !== next.name) {
+        setNextTask(next.name);
+        setShowTransitionHelper(true);
+        setTimeout(() => setShowTransitionHelper(false), 8000);
+      }
+    }
+  }, [tasks, nextTask]);
+
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  const getMoodBasedTip = (mood) => {
+    const tips = {
+      '😊': "You're radiating positive energy! Maybe share that joy with someone special today 🌻",
+      '😐': "Neutral days are perfectly okay. Sometimes just existing is enough, and that's beautiful 🤍",
+      '😢': "It's brave to acknowledge sadness. Would a warm drink or soft blanket help comfort you right now? 🫖",
+      '😡': "Frustration shows you care deeply. Try the 4-7-8 breathing: breathe in for 4, hold for 7, out for 8 💨",
+      '😴': "Your body is asking for rest, and that's wisdom. Honor what you need - you deserve gentle care 🌙",
+      '😰': "Anxiety can feel overwhelming, but you're not alone. Try naming 5 things you can see around you 👀",
+      '🤗': "Your excitement is contagious! Channel that beautiful energy into something that brings you joy ⚡",
+      '😌': "What a gift to feel calm. Take a moment to appreciate this peaceful feeling within you 🕊️"
+    };
+    return tips[mood] || "You're doing great just by checking in with yourself today 💜";
+  };
+
+  const getEnergyBasedSuggestion = (energy, mood) => {
+    if (energy <= 2) {
+      return "Low energy days call for extra gentleness. Maybe try one small, nurturing task? 🌱";
+    } else if (energy >= 4) {
+      return "You have good energy today! This might be perfect for tackling something you've been putting off ⚡";
+    }
+    return "Medium energy is perfect for steady, mindful progress. You're doing just right 🌿";
   };
 
   const handleTaskToggle = (taskId) => {
     const task = tasks.find(t => t.id === taskId);
     if (!task.done) {
       const encouragingMessages = [
-        "Amazing work! You're crushing it! 🎉",
-        "You're doing great! Keep it up! ⭐",
-        "Fantastic job! You should be proud! 🌟",
-        "Way to go! You're making progress! 💪",
-        "Excellent! You're taking care of yourself! 🎯"
+        "Look at you taking care of yourself! That's something to be genuinely proud of 🌟",
+        "You're building such beautiful habits, one gentle step at a time ✨",
+        "Every task you complete is an act of self-love. You're doing wonderfully! 💜",
+        "Your future self is going to thank you for this kindness you're showing yourself 🦋",
+        "Progress isn't always loud - sometimes it's quiet and steady, just like this 🌸"
       ];
       const randomMessage = encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
       showToast(randomMessage);
@@ -59,12 +117,44 @@ function App() {
     setTasks(tasks.map(task => 
       task.id === taskId ? { ...task, done: !task.done } : task
     ));
+
+    // Update streak
+    const newTasks = tasks.map(task => 
+      task.id === taskId ? { ...task, done: !task.done } : task
+    );
+    const completedCount = newTasks.filter(t => t.done).length;
+    
+    if (completedCount === tasks.length) {
+      const newStreak = streakCount + 1;
+      setStreakCount(newStreak);
+      localStorage.setItem('neuropal-streak', newStreak.toString());
+      showToast(`🔥 ${newStreak} day streak! You're building something beautiful!`, 'celebration');
+    }
   };
 
   const handleMoodSelect = (mood) => {
     setCurrentMood(mood);
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     setMoodHistory([...moodHistory, { mood, time: timestamp }]);
+    
+    // Show mood-based tip
+    setTimeout(() => {
+      showToast(getMoodBasedTip(mood), 'tip');
+    }, 1000);
+  };
+
+  const handleEnergySelect = (energy) => {
+    setCurrentEnergy(energy);
+    setTimeout(() => {
+      showToast(getEnergyBasedSuggestion(energy, currentMood), 'tip');
+    }, 1000);
+  };
+
+  const handleSensoryUpdate = (sensory) => {
+    setSensoryNeeds(sensory);
+    if (sensory.length > 0) {
+      showToast("Thank you for honoring your sensory needs. You know yourself best 🤗", 'support');
+    }
   };
 
   const toggleCalmSound = () => {
@@ -85,7 +175,7 @@ function App() {
         <div className="header-content">
           <div>
             <h1>🧠 NeuroPal</h1>
-            <p>Your daily companion</p>
+            <p>Your gentle daily companion</p>
           </div>
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
@@ -102,7 +192,7 @@ function App() {
           className={`tab-button ${activeTab === 'mood' ? 'active' : ''}`}
           onClick={() => setActiveTab('mood')}
         >
-          💭 Mood
+          💭 Feelings
         </button>
         <button 
           className={`tab-button ${activeTab === 'calm' ? 'active' : ''}`}
@@ -110,13 +200,27 @@ function App() {
         >
           🧘 Calm
         </button>
+        <button 
+          className={`tab-button ${activeTab === 'support' ? 'active' : ''}`}
+          onClick={() => setActiveTab('support')}
+        >
+          💜 Support
+        </button>
       </nav>
 
       <main className="app-content">
         {activeTab === 'routine' && (
           <div className="routine-tab">
             <div className="progress-section">
-              <h2>Daily Routine</h2>
+              <div className="routine-header">
+                <h2>Your Daily Journey</h2>
+                {streakCount > 0 && (
+                  <div className="streak-counter">
+                    <span className="streak-flame">🔥</span>
+                    <span className="streak-text">{streakCount} day{streakCount !== 1 ? 's' : ''} of self-care</span>
+                  </div>
+                )}
+              </div>
               <div className="progress-bar">
                 <div 
                   className="progress-fill" 
@@ -124,7 +228,7 @@ function App() {
                 ></div>
               </div>
               <p className="progress-text">
-                {completedTasks} of {tasks.length} tasks completed
+                {completedTasks} of {tasks.length} gentle steps completed
               </p>
             </div>
             
@@ -140,26 +244,43 @@ function App() {
             
             {completedTasks === tasks.length && (
               <div className="celebration">
-                🎉 Amazing! You've completed all your tasks today! 🎉
+                🌟 You've completed your entire routine! Your dedication to self-care is truly inspiring 🌟
               </div>
             )}
+
+            <EnergyTracker 
+              energy={currentEnergy} 
+              onEnergySelect={handleEnergySelect}
+            />
           </div>
         )}
 
         {activeTab === 'mood' && (
           <div className="mood-tab">
-            <h2>How are you feeling?</h2>
+            <h2>How is your heart feeling today?</h2>
             <MoodEntry mood={currentMood} onSelect={handleMoodSelect} />
             
             {currentMood && (
               <div className="current-mood">
-                <p>Current mood: <span className="mood-display">{currentMood}</span></p>
+                <p>Right now you're feeling: <span className="mood-display">{currentMood}</span></p>
               </div>
             )}
+
+            {currentMood && (
+              <MoodReflection 
+                reflection={moodReflection}
+                onReflectionChange={setMoodReflection}
+              />
+            )}
+
+            <SensoryCheckIn 
+              sensoryNeeds={sensoryNeeds}
+              onSensoryUpdate={handleSensoryUpdate}
+            />
             
             {moodHistory.length > 0 && (
               <div className="mood-history">
-                <h3>Today's Mood Journey</h3>
+                <h3>Your Emotional Journey Today</h3>
                 <div className="mood-timeline">
                   {moodHistory.map((entry, index) => (
                     <div key={index} className="mood-entry">
@@ -175,12 +296,12 @@ function App() {
 
         {activeTab === 'calm' && (
           <div className="calm-tab">
-            <h2>Take a Moment to Breathe</h2>
+            <h2>Take a Gentle Moment for Yourself</h2>
             
             <div className="breathing-section">
               <div className="breathing-circle">
                 <div className="breathing-animation"></div>
-                <p className="breathing-text">Breathe in... Breathe out...</p>
+                <p className="breathing-text">Breathe with kindness... You deserve this peace...</p>
               </div>
             </div>
             
@@ -195,15 +316,28 @@ function App() {
                 className={`sound-button ${isPlayingSound ? 'playing' : ''}`}
                 onClick={toggleCalmSound}
               >
-                {isPlayingSound ? '⏸️ Pause' : '▶️ Play'} Calm Sounds
+                {isPlayingSound ? '⏸️ Pause' : '▶️ Play'} Soothing Sounds
               </button>
               {isPlayingSound && (
-                <p className="sound-status">🎵 Playing peaceful nature sounds...</p>
+                <p className="sound-status">🎵 Gentle nature sounds are embracing you...</p>
               )}
             </div>
           </div>
         )}
+
+        {activeTab === 'support' && (
+          <div className="support-tab">
+            <CompassionateChat />
+          </div>
+        )}
       </main>
+
+      {showTransitionHelper && (
+        <TransitionHelper 
+          nextTask={nextTask}
+          onClose={() => setShowTransitionHelper(false)}
+        />
+      )}
 
       {toast && <Toast message={toast.message} type={toast.type} />}
     </div>
