@@ -1,0 +1,19 @@
+import React from 'react';
+import './TaskCard.css'; // optional for styling
+
+const TaskCard = ({ task, onToggle }) => {
+  return (
+    <div className={`task-card ${task.done ? "done" : ""}`}>
+      <label>
+        <input
+          type="checkbox"
+          checked={task.done}
+          onChange={() => onToggle(task.id)}
+        />
+        {task.name}
+      </label>
+    </div>
+  );
+};
+
+export default TaskCard;
