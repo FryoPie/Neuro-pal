@@ -8,12 +8,14 @@ import SensoryCheckIn from './components/SensoryCheckIn';
 import MoodReflection from './components/MoodReflection';
 import CompassionateChat from './components/CompassionateChat';
 import TransitionHelper from './components/TransitionHelper';
+import CalendarView from './components/CalendarView';
 
 function App() {
   const [activeTab, setActiveTab] = useState('routine');
   const [currentMood, setCurrentMood] = useState('');
   const [currentEnergy, setCurrentEnergy] = useState(3);
   const [moodHistory, setMoodHistory] = useState([]);
+  const [energyHistory, setEnergyHistory] = useState([]);
   const [moodReflection, setMoodReflection] = useState('');
   const [sensoryNeeds, setSensoryNeeds] = useState([]);
   const [isPlayingSound, setIsPlayingSound] = useState(false);
@@ -22,6 +24,7 @@ function App() {
   const [streakCount, setStreakCount] = useState(0);
   const [showTransitionHelper, setShowTransitionHelper] = useState(false);
   const [nextTask, setNextTask] = useState('');
+  const [calendarRef, setCalendarRef] = useState(null);
   
   const [tasks, setTasks] = useState([
     { id: 1, name: 'Take morning medication', done: false },
@@ -135,7 +138,13 @@ function App() {
   const handleMoodSelect = (mood) => {
     setCurrentMood(mood);
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    setMoodHistory([...moodHistory, { mood, time: timestamp }]);
+    const newEntry = { mood, time: timestamp };
+    setMoodHistory([...moodHistory, newEntry]);
+    
+    // Update calendar data
+    if (calendarRef && calendarRef.addTodayData) {
+      calendarRef.addTodayData(mood, currentEnergy, moodReflection);
+    }
     
     // Show mood-based tip
     setTimeout(() => {
@@ -145,6 +154,14 @@ function App() {
 
   const handleEnergySelect = (energy) => {
     setCurrentEnergy(energy);
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setEnergyHistory([...energyHistory, { energy, time: timestamp }]);
+    
+    // Update calendar data
+    if (calendarRef && calendarRef.addTodayData) {
+      calendarRef.addTodayData(currentMood, energy, moodReflection);
+    }
+    
     setTimeout(() => {
       showToast(getEnergyBasedSuggestion(energy, currentMood), 'tip');
     }, 1000);
@@ -154,6 +171,14 @@ function App() {
     setSensoryNeeds(sensory);
     if (sensory.length > 0) {
       showToast("Thank you for honoring your sensory needs. You know yourself best 🤗", 'support');
+    }
+  };
+
+  const handleReflectionChange = (reflection) => {
+    setMoodReflection(reflection);
+    // Update calendar data with reflection
+    if (calendarRef && calendarRef.addTodayData && (currentMood || currentEnergy)) {
+      calendarRef.addTodayData(currentMood, currentEnergy, reflection);
     }
   };
 
@@ -193,6 +218,12 @@ function App() {
           onClick={() => setActiveTab('mood')}
         >
           💭 Feelings
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'calendar' ? 'active' : ''}`}
+          onClick={() => setActiveTab('calendar')}
+        >
+          📅 Calendar
         </button>
         <button 
           className={`tab-button ${activeTab === 'calm' ? 'active' : ''}`}
@@ -269,7 +300,7 @@ function App() {
             {currentMood && (
               <MoodReflection 
                 reflection={moodReflection}
-                onReflectionChange={setMoodReflection}
+                onReflectionChange={handleReflectionChange}
               />
             )}
 
@@ -292,6 +323,17 @@ function App() {
               </div>
             )}
           </div>
+        )}
+
+        {activeTab === 'calendar' && (
+          <CalendarView 
+            ref={setCalendarRef}
+            moodHistory={moodHistory}
+            energyHistory={energyHistory}
+            onDataUpdate={(data) => {
+              // Handle calendar data updates if needed
+            }}
+          />
         )}
 
         {activeTab === 'calm' && (
