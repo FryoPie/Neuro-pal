@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MoodEntry from './components/MoodEntry';
 import TaskCard from './components/TaskCard';
+import Toast from './components/Toast';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   const [activeTab, setActiveTab] = useState('routine');
   const [currentMood, setCurrentMood] = useState('');
   const [moodHistory, setMoodHistory] = useState([]);
   const [isPlayingSound, setIsPlayingSound] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [theme, setTheme] = useState('light');
   
   const [tasks, setTasks] = useState([
     { id: 1, name: 'Take morning medication', done: false },
@@ -28,7 +32,30 @@ function App() {
     motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]
   );
 
+  // Apply theme to document root
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
   const handleTaskToggle = (taskId) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task.done) {
+      const encouragingMessages = [
+        "Amazing work! You're crushing it! 🎉",
+        "You're doing great! Keep it up! ⭐",
+        "Fantastic job! You should be proud! 🌟",
+        "Way to go! You're making progress! 💪",
+        "Excellent! You're taking care of yourself! 🎯"
+      ];
+      const randomMessage = encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
+      showToast(randomMessage);
+    }
+    
     setTasks(tasks.map(task => 
       task.id === taskId ? { ...task, done: !task.done } : task
     ));
@@ -45,14 +72,23 @@ function App() {
     // In a real app, you'd play/pause actual audio here
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
   const completedTasks = tasks.filter(task => task.done).length;
   const progressPercentage = (completedTasks / tasks.length) * 100;
 
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🧠 NeuroPal</h1>
-        <p>Your daily companion</p>
+        <div className="header-content">
+          <div>
+            <h1>🧠 NeuroPal</h1>
+            <p>Your daily companion</p>
+          </div>
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+        </div>
       </header>
 
       <nav className="tab-navigation">
@@ -168,6 +204,8 @@ function App() {
           </div>
         )}
       </main>
+
+      {toast && <Toast message={toast.message} type={toast.type} />}
     </div>
   );
 }
