@@ -9,7 +9,7 @@ export const MOTIVATIONAL_QUOTES = [
 ];
 
 export const ENERGY_LEVELS = [
-  { level: 1, emoji: "🪫", label: "Empty", description: "Need lots of gentle rest and recharging" },
+  { level: 1, emoji: "🔌", label: "Empty", description: "Need lots of gentle rest and recharging" },
   { level: 2, emoji: "🔋", label: "Low", description: "Taking it very easy today, minimal tasks" },
   { level: 3, emoji: "🔋", label: "Medium", description: "Steady and mindful energy for moderate activities" },
   { level: 4, emoji: "🔋", label: "Good", description: "Feeling capable and ready for most tasks" },
