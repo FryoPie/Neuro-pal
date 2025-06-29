@@ -223,7 +223,7 @@ function App() {
           className={`tab-button ${activeTab === 'calendar' ? 'active' : ''}`}
           onClick={() => setActiveTab('calendar')}
         >
-          📅 Calendar
+          📅 My Week
         </button>
         <button 
           className={`tab-button ${activeTab === 'calm' ? 'active' : ''}`}

@@ -221,7 +221,7 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `neuropal-report-${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `neuropal-wellness-report-${new Date().toISOString().split('T')[0]}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -360,7 +360,7 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
           className="therapist-report-button"
           disabled={Object.keys(calendarData).length === 0}
         >
-          📋 Generate Report for Healthcare Provider
+          📋 Download My Wellness Report
         </button>
         <p className="report-description">
           Creates a comprehensive summary of your mood and energy patterns for the past 30 days
