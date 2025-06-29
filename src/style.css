@@ -562,7 +562,7 @@ body {
   text-align: center;
   line-height: 1.2;
   letter-spacing: 0.5px;
-  color: var(--mood-label-color, #222);
+  color: var(--text-primary);
   transition: color 0.3s ease;
 }
 
