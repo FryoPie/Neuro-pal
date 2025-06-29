@@ -566,16 +566,6 @@ body {
   transition: color 0.3s ease;
 }
 
-body.dark-mode .mood-label {
-  color: #f5f5f5; /* Dark mode text */
-}
-
-}
-
-body.dark-mode .mood-label {
-  color: #f5f5f5; /* Dark mode text */
-}
-
 
 .add-custom-mood {
   border: 2px dashed var(--border-color);
