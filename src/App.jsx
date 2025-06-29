@@ -10,6 +10,8 @@ import CompassionateChat from './components/CompassionateChat';
 import TransitionHelper from './components/TransitionHelper';
 import CalendarView from './components/CalendarView';
 import CalmView from './components/CalmView';
+import Sidebar from './components/Sidebar';
+import MobileNavbar from './components/MobileNavbar';
 import { DEFAULT_TASKS, ENCOURAGING_MESSAGES } from './utils/constants';
 
 function App() {
@@ -27,6 +29,22 @@ function App() {
   const [nextTask, setNextTask] = useState('');
   const [calendarRef, setCalendarRef] = useState(null);
   const [tasks, setTasks] = useState(DEFAULT_TASKS);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth <= 768) {
+        setSidebarCollapsed(true);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Load streak from localStorage
   useEffect(() => {
@@ -160,159 +178,157 @@ function App() {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
+
   const completedTasks = tasks.filter(task => task.done).length;
   const progressPercentage = (completedTasks / tasks.length) * 100;
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <div className="header-content">
-          <div>
-            <h1>🧠 NeuroPal</h1>
-            <p>Your gentle daily companion</p>
-          </div>
-          <ThemeToggle theme={theme} onToggle={toggleTheme} />
-        </div>
-      </header>
+    <div className={`app ${sidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded'}`}>
+      {/* Desktop Sidebar */}
+      {!isMobile && (
+        <Sidebar 
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          isCollapsed={sidebarCollapsed}
+          toggleSidebar={toggleSidebar}
+        />
+      )}
 
-      <nav className="tab-navigation">
-        <button 
-          className={`tab-button ${activeTab === 'routine' ? 'active' : ''}`}
-          onClick={() => setActiveTab('routine')}
-        >
-          📋 Routine
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'mood' ? 'active' : ''}`}
-          onClick={() => setActiveTab('mood')}
-        >
-          💭 Feelings
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'calendar' ? 'active' : ''}`}
-          onClick={() => setActiveTab('calendar')}
-        >
-          📅 My Week
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'calm' ? 'active' : ''}`}
-          onClick={() => setActiveTab('calm')}
-        >
-          🧘 Calm
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'support' ? 'active' : ''}`}
-          onClick={() => setActiveTab('support')}
-        >
-          💜 Support
-        </button>
-      </nav>
-
-      <main className="app-content">
-        {activeTab === 'routine' && (
-          <div className="routine-tab">
-            <div className="progress-section">
-              <div className="routine-header">
-                <h2>Your Daily Journey</h2>
-                {streakCount > 0 && (
-                  <div className="streak-counter">
-                    <span className="streak-flame">🔥</span>
-                    <span className="streak-text">{streakCount} day{streakCount !== 1 ? 's' : ''} of self-care</span>
-                  </div>
-                )}
+      {/* Main Content Area */}
+      <div className="main-content">
+        {/* Header */}
+        <header className="app-header">
+          <div className="header-content">
+            {isMobile && (
+              <div className="mobile-header">
+                <h1>🧠 NeuroPal</h1>
+                <p>Your gentle companion</p>
               </div>
-              <div className="progress-bar">
-                <div 
-                  className="progress-fill" 
-                  style={{ width: `${progressPercentage}%` }}
-                ></div>
-              </div>
-              <p className="progress-text">
-                {completedTasks} of {tasks.length} gentle steps completed
-              </p>
+            )}
+            <div className="header-actions">
+              <ThemeToggle theme={theme} onToggle={toggleTheme} />
             </div>
-            
-            <div className="tasks-container">
-              {tasks.map(task => (
-                <TaskCard 
-                  key={task.id} 
-                  task={task} 
-                  onToggle={handleTaskToggle} 
-                />
-              ))}
-            </div>
-            
-            {completedTasks === tasks.length && (
-              <div className="celebration">
-                🌟 You've completed your entire routine! Your dedication to self-care is truly inspiring 🌟
-              </div>
-            )}
-
-            <EnergyTracker 
-              energy={currentEnergy} 
-              onEnergySelect={handleEnergySelect}
-            />
           </div>
-        )}
+        </header>
 
-        {activeTab === 'mood' && (
-          <div className="mood-tab">
-            <h2>How is your heart feeling today?</h2>
-            <MoodEntry mood={currentMood} onSelect={handleMoodSelect} />
-            
-            {currentMood && (
-              <div className="current-mood">
-                <p>Right now you're feeling: <span className="mood-display">{currentMood}</span></p>
-              </div>
-            )}
-
-            {currentMood && (
-              <MoodReflection 
-                reflection={moodReflection}
-                onReflectionChange={handleReflectionChange}
-              />
-            )}
-
-            <SensoryCheckIn 
-              sensoryNeeds={sensoryNeeds}
-              onSensoryUpdate={handleSensoryUpdate}
-            />
-            
-            {moodHistory.length > 0 && (
-              <div className="mood-history">
-                <h3>Your Emotional Journey Today</h3>
-                <div className="mood-timeline">
-                  {moodHistory.map((entry, index) => (
-                    <div key={index} className="mood-entry">
-                      <span className="mood-time">{entry.time}</span>
-                      <span className="mood-emoji">{entry.mood}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'calendar' && (
-          <CalendarView 
-            ref={setCalendarRef}
-            moodHistory={moodHistory}
-            energyHistory={energyHistory}
-            onDataUpdate={(data) => {
-              // Handle calendar data updates if needed
-            }}
+        {/* Mobile Navigation */}
+        {isMobile && (
+          <MobileNavbar 
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           />
         )}
 
-        {activeTab === 'calm' && <CalmView />}
+        {/* Content */}
+        <main className="app-content">
+          {activeTab === 'routine' && (
+            <div className="routine-tab">
+              <div className="progress-section">
+                <div className="routine-header">
+                  <h2>Your Daily Journey</h2>
+                  {streakCount > 0 && (
+                    <div className="streak-counter">
+                      <span className="streak-flame">🔥</span>
+                      <span className="streak-text">{streakCount} day{streakCount !== 1 ? 's' : ''} of self-care</span>
+                    </div>
+                  )}
+                </div>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill" 
+                    style={{ width: `${progressPercentage}%` }}
+                  ></div>
+                </div>
+                <p className="progress-text">
+                  {completedTasks} of {tasks.length} gentle steps completed
+                </p>
+              </div>
+              
+              <div className="tasks-container">
+                {tasks.map(task => (
+                  <TaskCard 
+                    key={task.id} 
+                    task={task} 
+                    onToggle={handleTaskToggle} 
+                  />
+                ))}
+              </div>
+              
+              {completedTasks === tasks.length && (
+                <div className="celebration">
+                  🌟 You've completed your entire routine! Your dedication to self-care is truly inspiring 🌟
+                </div>
+              )}
 
-        {activeTab === 'support' && (
-          <div className="support-tab">
-            <CompassionateChat />
-          </div>
-        )}
-      </main>
+              <EnergyTracker 
+                energy={currentEnergy} 
+                onEnergySelect={handleEnergySelect}
+              />
+            </div>
+          )}
+
+          {activeTab === 'mood' && (
+            <div className="mood-tab">
+              <h2>How is your heart feeling today?</h2>
+              <MoodEntry mood={currentMood} onSelect={handleMoodSelect} />
+              
+              {currentMood && (
+                <div className="current-mood">
+                  <p>Right now you're feeling: <span className="mood-display">{currentMood}</span></p>
+                </div>
+              )}
+
+              {currentMood && (
+                <MoodReflection 
+                  reflection={moodReflection}
+                  onReflectionChange={handleReflectionChange}
+                />
+              )}
+
+              <SensoryCheckIn 
+                sensoryNeeds={sensoryNeeds}
+                onSensoryUpdate={handleSensoryUpdate}
+              />
+              
+              {moodHistory.length > 0 && (
+                <div className="mood-history">
+                  <h3>Your Emotional Journey Today</h3>
+                  <div className="mood-timeline">
+                    {moodHistory.map((entry, index) => (
+                      <div key={index} className="mood-entry">
+                        <span className="mood-time">{entry.time}</span>
+                        <span className="mood-emoji">{entry.mood}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'calendar' && (
+            <CalendarView 
+              ref={setCalendarRef}
+              moodHistory={moodHistory}
+              energyHistory={energyHistory}
+              onDataUpdate={(data) => {
+                // Handle calendar data updates if needed
+              }}
+            />
+          )}
+
+          {activeTab === 'calm' && <CalmView />}
+
+          {activeTab === 'support' && (
+            <div className="support-tab">
+              <CompassionateChat />
+            </div>
+          )}
+        </main>
+      </div>
 
       {showTransitionHelper && (
         <TransitionHelper 
