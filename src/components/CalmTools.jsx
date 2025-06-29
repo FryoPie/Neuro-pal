@@ -125,7 +125,7 @@ const CalmTools = () => {
       title: 'Gentle Movement',
       description: 'Your body knows what it needs',
       suggestions: [
-        '🤲 Roll your shoulders slowly',
+        '🤲 Roll your shoulders slowly and mindfully',
         '👐 Stretch your fingers wide, then make gentle fists',
         '🦶 Wiggle your toes or rotate your ankles',
         '💆 Gently massage your temples or neck',
@@ -216,25 +216,28 @@ const CalmTools = () => {
         <div className="tool-categories">
           <div className="tool-category">
             <h4>🌱 Grounding</h4>
-            <p>When you'd like to feel more present</p>
+            <p>When you'd like to feel more present and connected</p>
             <div className="tool-options">
               <button 
                 onClick={() => handleStartTool('grounding', '5-4-3-2-1')}
                 className="tool-option-button"
+                aria-label="Start 5-4-3-2-1 grounding technique"
               >
                 <span className="tool-name">5-4-3-2-1 Technique</span>
-                <span className="tool-desc">Use your senses to anchor</span>
+                <span className="tool-desc">Use your senses to anchor in the present</span>
               </button>
               <button 
                 onClick={() => handleStartTool('grounding', 'object-focus')}
                 className="tool-option-button"
+                aria-label="Start gentle focus technique"
               >
                 <span className="tool-name">Gentle Focus</span>
-                <span className="tool-desc">Find calm through observation</span>
+                <span className="tool-desc">Find calm through mindful observation</span>
               </button>
               <button 
                 onClick={() => handleStartTool('grounding', 'body-awareness')}
                 className="tool-option-button"
+                aria-label="Start body check-in technique"
               >
                 <span className="tool-name">Body Check-In</span>
                 <span className="tool-desc">Connect with yourself kindly</span>
@@ -251,6 +254,7 @@ const CalmTools = () => {
                   key={index}
                   onClick={() => handleStartTool('cbt', index)}
                   className="tool-option-button"
+                  aria-label={`Start ${prompt.title} technique`}
                 >
                   <span className="tool-name">{prompt.title}</span>
                   <span className="tool-desc">{prompt.situation}</span>
@@ -268,6 +272,7 @@ const CalmTools = () => {
                   key={index}
                   onClick={() => handleStartTool('sensory', index)}
                   className="tool-option-button"
+                  aria-label={`Explore ${tool.title} techniques`}
                 >
                   <span className="tool-name">{tool.title}</span>
                   <span className="tool-desc">{tool.description}</span>
@@ -292,7 +297,11 @@ const CalmTools = () => {
             <h3>Beautifully Done</h3>
             <p className="completion-message">{tool.completion}</p>
             <div className="tool-actions">
-              <button onClick={handleComplete} className="primary-action">
+              <button 
+                onClick={handleComplete} 
+                className="primary-action"
+                aria-label="Return to tools menu"
+              >
                 Return to Tools
               </button>
             </div>
@@ -326,16 +335,25 @@ const CalmTools = () => {
               placeholder={currentStep.placeholder}
               className="response-input"
               rows="3"
+              aria-label={`Step ${toolStep + 1} response`}
             />
             <p className="input-note">You can write as much or as little as feels right</p>
           </div>
         </div>
 
         <div className="tool-actions">
-          <button onClick={handleSkip} className="secondary-action">
+          <button 
+            onClick={handleSkip} 
+            className="secondary-action"
+            aria-label="Skip this step"
+          >
             Skip This Step
           </button>
-          <button onClick={handleNextStep} className="primary-action">
+          <button 
+            onClick={handleNextStep} 
+            className="primary-action"
+            aria-label={toolStep < tool.steps.length - 1 ? 'Continue to next step' : 'Complete exercise'}
+          >
             {toolStep < tool.steps.length - 1 ? 'Continue Gently' : 'Complete'}
           </button>
         </div>
@@ -355,7 +373,11 @@ const CalmTools = () => {
             <h3>Gentle Reflection</h3>
             <p className="completion-message">{prompt.followUp}</p>
             <div className="tool-actions">
-              <button onClick={handleComplete} className="primary-action">
+              <button 
+                onClick={handleComplete} 
+                className="primary-action"
+                aria-label="Return to tools menu"
+              >
                 Return to Tools
               </button>
             </div>
@@ -380,16 +402,25 @@ const CalmTools = () => {
               placeholder={prompt.placeholder}
               className="response-input"
               rows="4"
+              aria-label="Reflection response"
             />
             <p className="input-note">Take your time. There are no right or wrong answers.</p>
           </div>
         </div>
 
         <div className="tool-actions">
-          <button onClick={handleComplete} className="secondary-action">
+          <button 
+            onClick={handleComplete} 
+            className="secondary-action"
+            aria-label="End reflection"
+          >
             That's Enough for Now
           </button>
-          <button onClick={handleNextStep} className="primary-action">
+          <button 
+            onClick={handleNextStep} 
+            className="primary-action"
+            aria-label="Complete reflection"
+          >
             Reflect on This
           </button>
         </div>
@@ -423,7 +454,11 @@ const CalmTools = () => {
         </div>
 
         <div className="tool-actions">
-          <button onClick={handleComplete} className="primary-action">
+          <button 
+            onClick={handleComplete} 
+            className="primary-action"
+            aria-label="Return to tools menu"
+          >
             Thank You, That Helps
           </button>
         </div>

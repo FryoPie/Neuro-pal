@@ -9,11 +9,11 @@ export const MOTIVATIONAL_QUOTES = [
 ];
 
 export const ENERGY_LEVELS = [
-  { level: 1, emoji: "🪫", label: "Drained", description: "Need lots of gentle rest" },
-  { level: 2, emoji: "🔋", label: "Low", description: "Taking it very easy today" },
-  { level: 3, emoji: "🔋", label: "Medium", description: "Steady and mindful energy" },
-  { level: 4, emoji: "🔋", label: "Good", description: "Feeling capable and ready" },
-  { level: 5, emoji: "⚡", label: "High", description: "Energized and motivated!" }
+  { level: 1, emoji: "🪫", label: "Empty", description: "Need lots of gentle rest and recharging" },
+  { level: 2, emoji: "🔋", label: "Low", description: "Taking it very easy today, minimal tasks" },
+  { level: 3, emoji: "🔋", label: "Medium", description: "Steady and mindful energy for moderate activities" },
+  { level: 4, emoji: "🔋", label: "Good", description: "Feeling capable and ready for most tasks" },
+  { level: 5, emoji: "⚡", label: "Full", description: "Energized and motivated for anything!" }
 ];
 
 export const MOOD_OPTIONS = [
@@ -28,7 +28,7 @@ export const MOOD_OPTIONS = [
 ];
 
 export const SENSORY_OPTIONS = [
-  { id: 'noise', emoji: '🔊', label: 'Too Noisy', tip: 'Try noise-canceling headphones or a quieter space' },
+  { id: 'noise', emoji: '🔊', label: 'Too Noisy', tip: 'Try noise-canceling headphones or find a quieter space' },
   { id: 'light', emoji: '💡', label: 'Too Bright', tip: 'Dim the lights or try sunglasses indoors' },
   { id: 'texture', emoji: '👕', label: 'Uncomfortable Textures', tip: 'Change to your most comfortable clothes' },
   { id: 'temperature', emoji: '🌡️', label: 'Temperature Issues', tip: 'Adjust your environment for comfort' },

@@ -14,6 +14,9 @@ const EnergyTracker = ({ energy, onEnergySelect }) => {
             onClick={() => onEnergySelect(e.level)}
             className={`energy-button ${energy === e.level ? "active" : ""}`}
             title={e.description}
+            data-level={e.level}
+            aria-label={`Energy level ${e.level}: ${e.label}`}
+            aria-pressed={energy === e.level}
           >
             <span className="energy-emoji">{e.emoji}</span>
             <span className="energy-label">{e.label}</span>

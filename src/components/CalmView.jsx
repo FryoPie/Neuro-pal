@@ -22,6 +22,7 @@ const CalmView = () => {
           <button 
             onClick={() => setShowTools(false)}
             className="back-button"
+            aria-label="Back to calm space"
           >
             ← Back to Calm Space
           </button>
@@ -38,7 +39,9 @@ const CalmView = () => {
       <div className="breathing-section">
         <div className="breathing-circle">
           <div className="breathing-animation"></div>
-          <p className="breathing-text">Breathe with kindness... You deserve this peace...</p>
+          <p className="breathing-text">
+            Breathe with kindness... You deserve this peace...
+          </p>
         </div>
       </div>
       
@@ -52,21 +55,30 @@ const CalmView = () => {
         <button 
           className={`sound-button ${isPlayingSound ? 'playing' : ''}`}
           onClick={toggleCalmSound}
+          aria-label={isPlayingSound ? 'Pause soothing sounds' : 'Play soothing sounds'}
+          aria-pressed={isPlayingSound}
         >
           {isPlayingSound ? '⏸️ Pause' : '▶️ Play'} Soothing Sounds
         </button>
         {isPlayingSound && (
-          <p className="sound-status">🎵 Gentle nature sounds are embracing you...</p>
+          <p className="sound-status" aria-live="polite">
+            🎵 Gentle nature sounds are embracing you...
+          </p>
         )}
       </div>
 
       <div className="tools-invitation">
         <div className="invitation-content">
           <h3>Need a Little Extra Support?</h3>
-          <p>Sometimes we need gentle tools to help us through difficult moments. Would you like to explore some calming techniques?</p>
+          <p>
+            Sometimes we need gentle tools to help us through difficult moments. 
+            Would you like to explore some calming techniques designed specifically 
+            for neurodivergent minds?
+          </p>
           <button 
             onClick={() => setShowTools(true)}
             className="tools-button"
+            aria-label="Explore gentle calming tools"
           >
             Explore Gentle Tools 🌱
           </button>
