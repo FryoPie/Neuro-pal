@@ -1,4 +1,4 @@
-import { CohereApi } from 'cohere-ai';
+import { CohereClient } from 'cohere-ai';
 
 // Initialize Cohere client
 let cohere = null;
@@ -6,7 +6,7 @@ let cohere = null;
 const initializeCohere = () => {
   const apiKey = import.meta.env.VITE_COHERE_API_KEY;
   if (apiKey && apiKey !== 'your_cohere_api_key_here') {
-    cohere = new CohereApi({
+    cohere = new CohereClient({
       token: apiKey,
     });
   }
