@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAIResponse, checkApiStatus } from '../services/openaiService';
+import { getAIResponse, checkApiStatus } from '../services/cohereService';
 
 const CompassionateChat = () => {
   const [userInput, setUserInput] = useState('');
@@ -43,7 +43,7 @@ const CompassionateChat = () => {
     setUserInput('');
 
     try {
-      // Get AI response
+      // Get AI response from Cohere
       const response = await getAIResponse(currentInput);
       
       const botMessage = { 
@@ -93,7 +93,7 @@ const CompassionateChat = () => {
         {/* API Status Indicator */}
         {apiStatus && (
           <div className={`api-status ${apiStatus.status}`}>
-            {apiStatus.status === 'connected' && '🟢 AI Support Active'}
+            {apiStatus.status === 'connected' && '🟢 AI Support Active (Cohere)'}
             {apiStatus.status === 'no-key' && '🟡 Enhanced Support Mode'}
             {apiStatus.status === 'error' && '🟡 Backup Support Mode'}
           </div>
@@ -150,7 +150,7 @@ const CompassionateChat = () => {
             placeholder="Share what's on your heart... (Press Enter to send, Shift+Enter for new line)"
             className="chat-input"
             rows="2"
-            maxLength={500}
+            maxLength={400}
             disabled={isTyping}
           />
           <div className="chat-actions">
@@ -175,9 +175,9 @@ const CompassionateChat = () => {
           </div>
         </div>
 
-        {userInput.length > 450 && (
+        {userInput.length > 350 && (
           <div className="character-count">
-            {userInput.length}/500 characters
+            {userInput.length}/400 characters
           </div>
         )}
 

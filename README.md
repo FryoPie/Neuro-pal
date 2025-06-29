@@ -13,21 +13,22 @@ A supportive routine & mood tracker for neurodivergent teens. Built for Bolt Hac
 
 ## AI Support Setup
 
-The AI Support tab can use either OpenAI's GPT-3.5 API or enhanced fallback responses.
+The AI Support tab uses Cohere's API for compassionate, neurodivergent-friendly responses.
 
-### Option 1: Using OpenAI API (Recommended)
+### Option 1: Using Cohere API (Recommended)
 
-1. **Get an OpenAI API Key**:
-   - Visit [OpenAI's website](https://platform.openai.com/api-keys)
+1. **Get a Cohere API Key**:
+   - Visit [Cohere's website](https://cohere.ai/)
    - Create an account or sign in
+   - Navigate to the API keys section
    - Generate a new API key
-   - Copy the key (starts with `sk-`)
+   - Copy the key
 
 2. **Configure Environment Variables**:
    - Create a `.env.local` file in your project root
    - Add your API key:
      ```
-     VITE_OPENAI_API_KEY=sk-your-actual-api-key-here
+     VITE_COHERE_API_KEY=your_cohere_api_key_here
      VITE_ENVIRONMENT=production
      ```
 
@@ -43,7 +44,7 @@ The AI Support tab can use either OpenAI's GPT-3.5 API or enhanced fallback resp
 
 ### Option 2: Using Enhanced Fallback Responses
 
-If you prefer not to use the OpenAI API or want to test without it:
+If you prefer not to use the Cohere API or want to test without it:
 
 1. **Set Environment to Development**:
    ```
@@ -55,13 +56,20 @@ If you prefer not to use the OpenAI API or want to test without it:
 ### API Status Indicators
 
 The app shows the current AI support mode:
-- 🟢 **AI Support Active**: OpenAI API connected and working
+- 🟢 **AI Support Active (Cohere)**: Cohere API connected and working
 - 🟡 **Enhanced Support Mode**: Using sophisticated keyword-based responses
 - 🟡 **Backup Support Mode**: API error, using fallback responses
 
+### Cohere API Features
+
+- **Free Tier Friendly**: Uses `command-light` model with optimized token limits
+- **Neurodivergent-Focused**: Custom system prompt designed for gentle, validating responses
+- **Smart Fallbacks**: Seamless switching to enhanced responses if API fails
+- **Cost Efficient**: Limited to 100 tokens per response to manage usage
+
 ### Security Notes
 
-⚠️ **Important**: The current implementation uses `dangerouslyAllowBrowser: true` for the OpenAI client. In a production environment, you should:
+⚠️ **Important**: The current implementation makes API calls directly from the browser. In a production environment, you should:
 
 1. **Use a backend proxy** to make API calls server-side
 2. **Never expose API keys** in client-side code
@@ -70,8 +78,9 @@ The app shows the current AI support mode:
 
 ### Cost Considerations
 
-- Each message costs approximately $0.0015-$0.002 (GPT-3.5-turbo pricing)
-- The app limits messages to 150 tokens to control costs
+- Cohere's free tier provides generous usage limits
+- Each message uses approximately 50-100 tokens
+- The app limits responses to 100 tokens to control usage
 - Consider implementing usage limits for production use
 
 ## Development
@@ -94,7 +103,7 @@ npm run preview
 
 - **React 18** - UI framework
 - **Vite** - Build tool and dev server
-- **OpenAI API** - AI-powered support responses
+- **Cohere AI** - AI-powered support responses
 - **CSS Custom Properties** - Theming and responsive design
 - **Local Storage** - Data persistence
 
