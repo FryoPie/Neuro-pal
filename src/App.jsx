@@ -10,6 +10,7 @@ import CompassionateChat from './components/CompassionateChat';
 import TransitionHelper from './components/TransitionHelper';
 import CalendarView from './components/CalendarView';
 import CalmView from './components/CalmView';
+import { DEFAULT_TASKS, ENCOURAGING_MESSAGES } from './utils/constants';
 
 function App() {
   const [activeTab, setActiveTab] = useState('routine');
@@ -25,14 +26,7 @@ function App() {
   const [showTransitionHelper, setShowTransitionHelper] = useState(false);
   const [nextTask, setNextTask] = useState('');
   const [calendarRef, setCalendarRef] = useState(null);
-  
-  const [tasks, setTasks] = useState([
-    { id: 1, name: 'Take morning medication', done: false },
-    { id: 2, name: 'Eat a healthy breakfast', done: false },
-    { id: 3, name: 'Review today\'s schedule', done: false },
-    { id: 4, name: 'Do 5 minutes of stretching', done: false },
-    { id: 5, name: 'Organize workspace/backpack', done: false }
-  ]);
+  const [tasks, setTasks] = useState(DEFAULT_TASKS);
 
   // Load streak from localStorage
   useEffect(() => {
@@ -81,7 +75,7 @@ function App() {
     return tips[mood] || "You're doing great just by checking in with yourself today 💜";
   };
 
-  const getEnergyBasedSuggestion = (energy, mood) => {
+  const getEnergyBasedSuggestion = (energy) => {
     if (energy <= 2) {
       return "Low energy days call for extra gentleness. Maybe try one small, nurturing task? 🌱";
     } else if (energy >= 4) {
@@ -93,14 +87,7 @@ function App() {
   const handleTaskToggle = (taskId) => {
     const task = tasks.find(t => t.id === taskId);
     if (!task.done) {
-      const encouragingMessages = [
-        "Look at you taking care of yourself! That's something to be genuinely proud of 🌟",
-        "You're building such beautiful habits, one gentle step at a time ✨",
-        "Every task you complete is an act of self-love. You're doing wonderfully! 💜",
-        "Your future self is going to thank you for this kindness you're showing yourself 🦋",
-        "Progress isn't always loud - sometimes it's quiet and steady, just like this 🌸"
-      ];
-      const randomMessage = encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
+      const randomMessage = ENCOURAGING_MESSAGES[Math.floor(Math.random() * ENCOURAGING_MESSAGES.length)];
       showToast(randomMessage);
     }
     
@@ -150,7 +137,7 @@ function App() {
     }
     
     setTimeout(() => {
-      showToast(getEnergyBasedSuggestion(energy, currentMood), 'tip');
+      showToast(getEnergyBasedSuggestion(energy), 'tip');
     }, 1000);
   };
 

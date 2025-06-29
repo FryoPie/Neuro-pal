@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
+import { MOTIVATIONAL_QUOTES } from '../utils/constants';
 import CalmTools from './CalmTools';
 
 const CalmView = () => {
   const [isPlayingSound, setIsPlayingSound] = useState(false);
   const [showTools, setShowTools] = useState(false);
 
-  const motivationalQuotes = [
-    "Your neurodivergent brain is a superpower, and today you're showing just how amazing it is! 🌟",
-    "Progress isn't about being perfect - it's about being kind to yourself along the way 💜",
-    "Every small step you take matters more than you know. You're doing beautifully! 🌸",
-    "Your unique way of seeing the world makes it brighter for everyone around you 🌈",
-    "Take it one gentle moment at a time. You have everything you need within you ✨",
-    "Your sensitivity is not a weakness - it's a gift that helps you understand the world deeply 🦋"
-  ];
-
   const [currentQuote] = useState(
-    motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]
+    MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)]
   );
 
   const toggleCalmSound = () => {

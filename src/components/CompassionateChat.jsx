@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAIResponse, checkApiStatus } from '../services/cohereService';
+import { getAIResponse, checkApiStatus } from '../services/aiService';
 
 const CompassionateChat = () => {
   const [userInput, setUserInput] = useState('');
@@ -8,7 +8,6 @@ const CompassionateChat = () => {
   const [apiStatus, setApiStatus] = useState(null);
   const [error, setError] = useState(null);
 
-  // Check API status on component mount
   useEffect(() => {
     const checkStatus = async () => {
       try {
@@ -43,7 +42,6 @@ const CompassionateChat = () => {
     setUserInput('');
 
     try {
-      // Get AI response from Cohere
       const response = await getAIResponse(currentInput);
       
       const botMessage = { 
@@ -58,7 +56,6 @@ const CompassionateChat = () => {
       console.error('Error getting AI response:', err);
       setError('I\'m having trouble responding right now, but I\'m still here with you. 💜');
       
-      // Add error message to chat
       const errorMessage = {
         type: 'bot',
         message: 'I\'m having trouble responding right now, but I\'m still here with you. Your feelings are valid, and you\'re not alone. 💜',
@@ -90,7 +87,6 @@ const CompassionateChat = () => {
         <h2>💜 Your Gentle Companion</h2>
         <p>This is a safe space to share what's on your heart. I'm here to listen with kindness and understanding.</p>
         
-        {/* API Status Indicator */}
         {apiStatus && (
           <div className={`api-status ${apiStatus.status}`}>
             {apiStatus.status === 'connected' && '🟢 AI Support Active (Cohere)'}

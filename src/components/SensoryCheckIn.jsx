@@ -1,15 +1,7 @@
 import React from 'react';
+import { SENSORY_OPTIONS } from '../utils/constants';
 
 const SensoryCheckIn = ({ sensoryNeeds, onSensoryUpdate }) => {
-  const sensoryOptions = [
-    { id: 'noise', emoji: '🔊', label: 'Too Noisy', tip: 'Try noise-canceling headphones or a quieter space' },
-    { id: 'light', emoji: '💡', label: 'Too Bright', tip: 'Dim the lights or try sunglasses indoors' },
-    { id: 'texture', emoji: '👕', label: 'Uncomfortable Textures', tip: 'Change to your most comfortable clothes' },
-    { id: 'temperature', emoji: '🌡️', label: 'Temperature Issues', tip: 'Adjust your environment for comfort' },
-    { id: 'crowded', emoji: '👥', label: 'Feeling Crowded', tip: 'Find a quiet space just for you' },
-    { id: 'hungry', emoji: '🍎', label: 'Need Snack/Water', tip: 'Nourish your body - it deserves care' }
-  ];
-
   const toggleSensory = (sensoryId) => {
     const updated = sensoryNeeds.includes(sensoryId)
       ? sensoryNeeds.filter(id => id !== sensoryId)
@@ -23,7 +15,7 @@ const SensoryCheckIn = ({ sensoryNeeds, onSensoryUpdate }) => {
       <p className="sensory-subtitle">Your sensory needs matter. Let's make sure you're comfortable 🤗</p>
       
       <div className="sensory-grid">
-        {sensoryOptions.map((option) => (
+        {SENSORY_OPTIONS.map((option) => (
           <button
             key={option.id}
             onClick={() => toggleSensory(option.id)}
@@ -40,7 +32,7 @@ const SensoryCheckIn = ({ sensoryNeeds, onSensoryUpdate }) => {
         <div className="sensory-tips">
           <h4>Gentle Suggestions:</h4>
           {sensoryNeeds.map(needId => {
-            const option = sensoryOptions.find(opt => opt.id === needId);
+            const option = SENSORY_OPTIONS.find(opt => opt.id === needId);
             return (
               <div key={needId} className="sensory-tip">
                 <span className="tip-emoji">{option.emoji}</span>
