@@ -9,6 +9,7 @@ import MoodReflection from './components/MoodReflection';
 import CompassionateChat from './components/CompassionateChat';
 import TransitionHelper from './components/TransitionHelper';
 import CalendarView from './components/CalendarView';
+import CalmView from './components/CalmView';
 
 function App() {
   const [activeTab, setActiveTab] = useState('routine');
@@ -18,7 +19,6 @@ function App() {
   const [energyHistory, setEnergyHistory] = useState([]);
   const [moodReflection, setMoodReflection] = useState('');
   const [sensoryNeeds, setSensoryNeeds] = useState([]);
-  const [isPlayingSound, setIsPlayingSound] = useState(false);
   const [toast, setToast] = useState(null);
   const [theme, setTheme] = useState('light');
   const [streakCount, setStreakCount] = useState(0);
@@ -33,19 +33,6 @@ function App() {
     { id: 4, name: 'Do 5 minutes of stretching', done: false },
     { id: 5, name: 'Organize workspace/backpack', done: false }
   ]);
-
-  const motivationalQuotes = [
-    "Your neurodivergent brain is a superpower, and today you're showing just how amazing it is! 🌟",
-    "Progress isn't about being perfect - it's about being kind to yourself along the way 💜",
-    "Every small step you take matters more than you know. You're doing beautifully! 🌸",
-    "Your unique way of seeing the world makes it brighter for everyone around you 🌈",
-    "Take it one gentle moment at a time. You have everything you need within you ✨",
-    "Your sensitivity is not a weakness - it's a gift that helps you understand the world deeply 🦋"
-  ];
-
-  const [currentQuote] = useState(
-    motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]
-  );
 
   // Load streak from localStorage
   useEffect(() => {
@@ -180,11 +167,6 @@ function App() {
     if (calendarRef && calendarRef.addTodayData && (currentMood || currentEnergy)) {
       calendarRef.addTodayData(currentMood, currentEnergy, reflection);
     }
-  };
-
-  const toggleCalmSound = () => {
-    setIsPlayingSound(!isPlayingSound);
-    // In a real app, you'd play/pause actual audio here
   };
 
   const toggleTheme = () => {
@@ -336,36 +318,7 @@ function App() {
           />
         )}
 
-        {activeTab === 'calm' && (
-          <div className="calm-tab">
-            <h2>Take a Gentle Moment for Yourself</h2>
-            
-            <div className="breathing-section">
-              <div className="breathing-circle">
-                <div className="breathing-animation"></div>
-                <p className="breathing-text">Breathe with kindness... You deserve this peace...</p>
-              </div>
-            </div>
-            
-            <div className="quote-section">
-              <blockquote className="motivational-quote">
-                "{currentQuote}"
-              </blockquote>
-            </div>
-            
-            <div className="sound-section">
-              <button 
-                className={`sound-button ${isPlayingSound ? 'playing' : ''}`}
-                onClick={toggleCalmSound}
-              >
-                {isPlayingSound ? '⏸️ Pause' : '▶️ Play'} Soothing Sounds
-              </button>
-              {isPlayingSound && (
-                <p className="sound-status">🎵 Gentle nature sounds are embracing you...</p>
-              )}
-            </div>
-          </div>
-        )}
+        {activeTab === 'calm' && <CalmView />}
 
         {activeTab === 'support' && (
           <div className="support-tab">
