@@ -4,6 +4,8 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
   const [selectedWeek, setSelectedWeek] = useState(0); // 0 = current week, -1 = last week, etc.
   const [calendarData, setCalendarData] = useState({});
   const [weeklyInsights, setWeeklyInsights] = useState(null);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [reportGenerated, setReportGenerated] = useState(false);
 
   // Get dates for the selected week
   const getWeekDates = (weekOffset = 0) => {
@@ -128,23 +130,58 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
     }
   }, [calendarData, selectedWeek]);
 
+  // Emotion-coded day background colors
+  const getDayBackgroundColor = (dayData) => {
+    if (!dayData) return 'var(--surface-soft)';
+    
+    const { mood, energy } = dayData;
+    
+    // Positive moods
+    if (['😊', '🤗', '😍'].includes(mood)) {
+      return '#E7F5E9'; // Green for positive days
+    }
+    
+    // Calm/peaceful moods
+    if (['😌', '🧘'].includes(mood)) {
+      return '#E3F2FD'; // Blue for calm days
+    }
+    
+    // Neutral moods
+    if (['😐', '😶'].includes(mood)) {
+      return '#FFF7E6'; // Yellow for neutral days
+    }
+    
+    // Low energy or tired
+    if (energy <= 2 || ['😴', '🪫'].includes(mood)) {
+      return '#F5F5F5'; // Gray for low energy days
+    }
+    
+    // Default
+    return 'var(--surface-soft)';
+  };
+
   const getMoodColor = (mood) => {
     const colors = {
-      '😊': '#FFD93D',
-      '😐': '#A8A8A8',
-      '😢': '#6BB6FF',
-      '😡': '#FF6B6B',
-      '😴': '#B19CD9',
-      '😰': '#FFB347',
-      '🤗': '#FF69B4',
-      '😌': '#98D8C8'
+      '😊': '#8A9A5B',
+      '😐': '#928E85',
+      '😢': '#6B8CAE',
+      '😡': '#A5705B',
+      '😴': '#8A7CA8',
+      '😰': '#B5A05B',
+      '🤗': '#A67B8A',
+      '😌': '#7A9A8A',
+      '😶': '#A8A49B',
+      '🤯': '#B58A7A',
+      '😠': '#A5705B',
+      '😍': '#8A9A7B',
+      '🧘': '#7A9A8A'
     };
-    return colors[mood] || '#E2E8F0';
+    return colors[mood] || '#928E85';
   };
 
   const getEnergyColor = (energy) => {
-    const colors = ['#FF6B6B', '#FFB347', '#FFD93D', '#98D8C8', '#4FD1C7'];
-    return colors[energy - 1] || '#E2E8F0';
+    const colors = ['#A5705B', '#B5A05B', '#8A9A5B', '#7A9A8A', '#6B8A7A'];
+    return colors[energy - 1] || '#928E85';
   };
 
   const formatDate = (date) => {
@@ -156,88 +193,118 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
     return date.toDateString() === today.toDateString();
   };
 
-  const generateTherapistReport = () => {
-    const allData = Object.entries(calendarData)
-      .sort(([a], [b]) => new Date(a) - new Date(b))
-      .slice(-30); // Last 30 days
+  const generateWeeklyWellnessReport = async () => {
+    setIsGeneratingReport(true);
+    
+    // Simulate report generation
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    const weekData = weekDates.map(date => ({
+      date: date.toDateString(),
+      data: calendarData[date.toDateString()]
+    })).filter(item => item.data);
 
-    let report = "NeuroPal - Monthly Mood & Energy Report\n";
+    let report = "📄 Weekly Wellness Report - NeuroPal\n";
     report += "=====================================\n\n";
     
-    report += `Report Period: ${allData.length > 0 ? new Date(allData[0][0]).toLocaleDateString() : 'N/A'} - ${new Date().toLocaleDateString()}\n`;
-    report += `Total Data Points: ${allData.length}\n\n`;
+    const startDate = weekDates[0].toLocaleDateString();
+    const endDate = weekDates[6].toLocaleDateString();
+    report += `📅 Week of: ${startDate} - ${endDate}\n`;
+    report += `📊 Data Points Collected: ${weekData.length}/7 days\n\n`;
 
-    if (allData.length > 0) {
+    if (weekData.length > 0) {
       // Mood summary
-      const moods = allData.map(([_, data]) => data.mood).filter(Boolean);
+      const moods = weekData.map(item => item.data.mood).filter(Boolean);
       const moodCounts = moods.reduce((acc, mood) => {
         const moodNames = {
           '😊': 'Happy', '😐': 'Neutral', '😢': 'Sad', '😡': 'Frustrated',
-          '😴': 'Tired', '😰': 'Anxious', '🤗': 'Excited', '😌': 'Calm'
+          '😴': 'Tired', '😰': 'Anxious', '🤗': 'Excited', '😌': 'Calm',
+          '😶': 'Numb', '🤯': 'Overwhelmed', '😠': 'Irritated', '😍': 'Loved',
+          '🧘': 'Calm Focused'
         };
         const name = moodNames[mood] || mood;
         acc[name] = (acc[name] || 0) + 1;
         return acc;
       }, {});
 
-      report += "MOOD FREQUENCY:\n";
+      report += "💭 EMOTIONAL PATTERNS:\n";
       Object.entries(moodCounts)
         .sort(([,a], [,b]) => b - a)
         .forEach(([mood, count]) => {
           const percentage = ((count / moods.length) * 100).toFixed(1);
-          report += `  ${mood}: ${count} times (${percentage}%)\n`;
+          report += `   ${mood}: ${count} times (${percentage}%)\n`;
         });
 
       // Energy summary
-      const energies = allData.map(([_, data]) => data.energy).filter(Boolean);
+      const energies = weekData.map(item => item.data.energy).filter(Boolean);
       if (energies.length > 0) {
         const avgEnergy = (energies.reduce((sum, e) => sum + e, 0) / energies.length).toFixed(1);
         const lowEnergyDays = energies.filter(e => e <= 2).length;
         const highEnergyDays = energies.filter(e => e >= 4).length;
 
-        report += "\nENERGY LEVELS:\n";
-        report += `  Average Energy: ${avgEnergy}/5\n`;
-        report += `  Low Energy Days (1-2): ${lowEnergyDays}\n`;
-        report += `  High Energy Days (4-5): ${highEnergyDays}\n`;
+        report += "\n⚡ ENERGY LEVELS:\n";
+        report += `   Average Energy: ${avgEnergy}/5\n`;
+        report += `   Low Energy Days (1-2): ${lowEnergyDays}\n`;
+        report += `   High Energy Days (4-5): ${highEnergyDays}\n`;
+      }
+
+      // Weekly insights
+      if (weeklyInsights && weeklyInsights.patterns.length > 0) {
+        report += "\n🧠 INSIGHTS & PATTERNS:\n";
+        weeklyInsights.patterns.forEach((pattern, index) => {
+          report += `   ${index + 1}. ${pattern.message}\n`;
+          report += `      💡 ${pattern.suggestion}\n\n`;
+        });
       }
 
       // Daily entries
-      report += "\nDAILY ENTRIES:\n";
-      allData.forEach(([date, data]) => {
+      report += "\n📝 DAILY ENTRIES:\n";
+      weekData.forEach(({ date, data }) => {
         const moodNames = {
           '😊': 'Happy', '😐': 'Neutral', '😢': 'Sad', '😡': 'Frustrated',
-          '😴': 'Tired', '😰': 'Anxious', '🤗': 'Excited', '😌': 'Calm'
+          '😴': 'Tired', '😰': 'Anxious', '🤗': 'Excited', '😌': 'Calm',
+          '😶': 'Numb', '🤯': 'Overwhelmed', '😠': 'Irritated', '😍': 'Loved',
+          '🧘': 'Calm Focused'
         };
         report += `${new Date(date).toLocaleDateString()}: `;
         if (data.mood) report += `Mood: ${moodNames[data.mood] || data.mood} `;
         if (data.energy) report += `Energy: ${data.energy}/5 `;
-        if (data.reflection) report += `Note: "${data.reflection}"`;
+        if (data.reflection) report += `\n   Reflection: "${data.reflection}"`;
         report += "\n";
       });
     }
+
+    report += "\n💜 Remember: This data is a tool for self-understanding, not judgment.\n";
+    report += "Every emotion and energy level is valid. You're doing great! 🌱\n\n";
+    report += "Generated by NeuroPal - Your gentle companion";
 
     // Create downloadable file
     const blob = new Blob([report], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `neuropal-wellness-report-${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `neuropal-weekly-wellness-report-${new Date().toISOString().split('T')[0]}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+
+    setIsGeneratingReport(false);
+    setReportGenerated(true);
+    setTimeout(() => setReportGenerated(false), 3000);
   };
 
   return (
     <div className="calendar-view">
       <div className="calendar-header">
         <h2>📅 Your Journey Calendar</h2>
-        <p>Track your daily mood and energy patterns</p>
+        <p>Track your daily emotional patterns with gentle awareness</p>
         
         <div className="week-navigation">
           <button 
             onClick={() => setSelectedWeek(selectedWeek - 1)}
             className="week-nav-button"
+            aria-label="Previous week"
           >
             ← Previous Week
           </button>
@@ -250,22 +317,28 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
             onClick={() => setSelectedWeek(selectedWeek + 1)}
             className="week-nav-button"
             disabled={selectedWeek >= 0}
+            aria-label="Next week"
           >
             Next Week →
           </button>
         </div>
       </div>
 
-      <div className="calendar-grid">
+      <div className="calendar-grid" role="grid" aria-label="Weekly calendar">
         {weekDates.map((date, index) => {
           const dateKey = date.toDateString();
           const dayData = calendarData[dateKey];
           const isCurrentDay = isToday(date);
+          const backgroundColor = getDayBackgroundColor(dayData);
           
           return (
             <div 
               key={dateKey} 
               className={`calendar-day ${isCurrentDay ? 'today' : ''} ${dayData ? 'has-data' : ''}`}
+              style={{ backgroundColor }}
+              role="gridcell"
+              aria-label={`${weekDays[index]} ${formatDate(date)}${dayData ? ', has mood data' : ''}`}
+              title={dayData ? `Mood: ${dayData.mood || 'Not set'}, Energy: ${dayData.energy || 'Not set'}/5` : 'No data recorded'}
             >
               <div className="day-header">
                 <span className="day-name">{weekDays[index]}</span>
@@ -278,7 +351,7 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
                     <div 
                       className="mood-indicator"
                       style={{ backgroundColor: getMoodColor(dayData.mood) }}
-                      title={`Mood: ${dayData.mood}`}
+                      aria-label={`Mood: ${dayData.mood}`}
                     >
                       {dayData.mood}
                     </div>
@@ -287,13 +360,17 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
                     <div 
                       className="energy-indicator"
                       style={{ backgroundColor: getEnergyColor(dayData.energy) }}
-                      title={`Energy: ${dayData.energy}/5`}
+                      aria-label={`Energy level: ${dayData.energy} out of 5`}
                     >
                       <span className="energy-level">{dayData.energy}</span>
                     </div>
                   )}
                   {dayData.reflection && (
-                    <div className="reflection-indicator" title={dayData.reflection}>
+                    <div 
+                      className="reflection-indicator" 
+                      title={dayData.reflection}
+                      aria-label="Personal reflection recorded"
+                    >
                       📝
                     </div>
                   )}
@@ -342,7 +419,7 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
 
           {weeklyInsights.patterns.length > 0 && (
             <div className="patterns-section">
-              <h4>🧠 Patterns & Suggestions</h4>
+              <h4>🧠 Patterns & Gentle Suggestions</h4>
               {weeklyInsights.patterns.map((pattern, index) => (
                 <div key={index} className="pattern-card">
                   <p className="pattern-message">{pattern.message}</p>
@@ -356,30 +433,53 @@ const CalendarView = ({ moodHistory, energyHistory, onDataUpdate }) => {
 
       <div className="calendar-actions">
         <button 
-          onClick={generateTherapistReport}
-          className="therapist-report-button"
-          disabled={Object.keys(calendarData).length === 0}
+          onClick={generateWeeklyWellnessReport}
+          className={`wellness-report-button ${isGeneratingReport ? 'generating' : ''} ${reportGenerated ? 'generated' : ''}`}
+          disabled={Object.keys(calendarData).length === 0 || isGeneratingReport}
+          aria-label="Generate weekly wellness report"
         >
-          📋 Download My Wellness Report
+          {isGeneratingReport ? (
+            <>
+              <span className="loading-spinner" aria-hidden="true">⏳</span>
+              Generating Report...
+            </>
+          ) : reportGenerated ? (
+            <>
+              <span className="success-icon" aria-hidden="true">✅</span>
+              Report Downloaded!
+            </>
+          ) : (
+            <>
+              📄 Generate Weekly Wellness Report
+            </>
+          )}
         </button>
         <p className="report-description">
-          Creates a comprehensive summary of your mood and energy patterns for the past 30 days
+          Creates a comprehensive, gentle summary of your emotional patterns for this week
         </p>
       </div>
 
       <div className="calendar-legend">
-        <h4>Legend</h4>
+        <h4>Understanding Your Calendar</h4>
         <div className="legend-items">
           <div className="legend-item">
-            <div className="legend-color mood-legend"></div>
-            <span>Mood (emoji with background color)</span>
+            <div className="legend-color" style={{ backgroundColor: '#E7F5E9' }}></div>
+            <span>Positive & joyful days</span>
           </div>
           <div className="legend-item">
-            <div className="legend-color energy-legend"></div>
-            <span>Energy Level (1-5 scale)</span>
+            <div className="legend-color" style={{ backgroundColor: '#E3F2FD' }}></div>
+            <span>Calm & peaceful days</span>
           </div>
           <div className="legend-item">
-            <span className="legend-icon">📝</span>
+            <div className="legend-color" style={{ backgroundColor: '#FFF7E6' }}></div>
+            <span>Neutral & steady days</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-color" style={{ backgroundColor: '#F5F5F5' }}></div>
+            <span>Low energy & rest days</span>
+          </div>
+          <div className="legend-item">
+            <span className="legend-icon" style={{ fontSize: '24px' }}>📝</span>
             <span>Personal reflection recorded</span>
           </div>
         </div>

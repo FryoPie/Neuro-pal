@@ -17,14 +17,14 @@ export const ENERGY_LEVELS = [
 ];
 
 export const MOOD_OPTIONS = [
-  { emoji: "😊", label: "Happy", color: "#FFD93D" },
-  { emoji: "😐", label: "Neutral", color: "#A8A8A8" },
-  { emoji: "😢", label: "Sad", color: "#6BB6FF" },
-  { emoji: "😡", label: "Frustrated", color: "#FF6B6B" },
-  { emoji: "😴", label: "Tired", color: "#B19CD9" },
-  { emoji: "😰", label: "Anxious", color: "#FFB347" },
-  { emoji: "🤗", label: "Excited", color: "#FF69B4" },
-  { emoji: "😌", label: "Calm", color: "#98D8C8" }
+  { emoji: "😊", label: "Happy", color: "#8A9A5B" },
+  { emoji: "😐", label: "Neutral", color: "#928E85" },
+  { emoji: "😢", label: "Sad", color: "#6B8CAE" },
+  { emoji: "😡", label: "Frustrated", color: "#A5705B" },
+  { emoji: "😴", label: "Tired", color: "#8A7CA8" },
+  { emoji: "😰", label: "Anxious", color: "#B5A05B" },
+  { emoji: "🤗", label: "Excited", color: "#A67B8A" },
+  { emoji: "😌", label: "Calm", color: "#7A9A8A" }
 ];
 
 export const SENSORY_OPTIONS = [
