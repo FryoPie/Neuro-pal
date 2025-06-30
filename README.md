@@ -1,15 +1,44 @@
-# NeuroPal - Your Daily Companion
+# NeuroPal - Your Daily Companion  
+A supportive routine & mood tracker for neurodivergent teens.  
+Built for Bolt Hackathon 2025.
 
-A supportive routine & mood tracker for neurodivergent teens. Built for Bolt Hackathon 2025.
+---
 
-## Features
+## 🖥️ Demo
 
-- **Daily Routine Tracking**: Gentle task management with encouraging feedback
-- **Mood & Energy Monitoring**: Track emotional states with compassionate responses
-- **Calendar View**: Visual weekly insights and pattern recognition
-- **Calm Tools**: Grounding techniques, CBT prompts, and sensory regulation
-- **AI Support**: Compassionate chat companion with emotional validation
+🎥 [Watch the Demo Video](https://www.youtube.com/watch?v=O2BYx_xAW6Q)
+🌐 [Live Preview](https://neuropal.netlify.app/)
+
+> Built in 72 hours by Team Dr. Binary during the Bolt Hackathon 2025
+
+---
+
+## 💡 Inspiration
+
+NeuroPal was created to support neurodivergent teens who often struggle with overstimulation, disrupted routines, and emotional regulation.  
+We wanted to build a gentle, validating space where users can track their day, reflect on their feelings, and get support without judgment.
+
+---
+
+## Features  
+- **Daily Routine Tracking**: Gentle task management with encouraging feedback  
+- **Mood & Energy Monitoring**: Track emotional states with compassionate responses  
+- **Calendar View**: Visual weekly insights and pattern recognition  
+- **Calm Tools**: Grounding techniques, CBT prompts, and sensory regulation  
+- **AI Support**: Compassionate chat companion with emotional validation  
 - **Accessibility**: Dark/light themes, reduced motion support, high contrast compatibility
+
+---
+
+## 🧠 How It Works
+
+- **Daily Tab**: Log routines, mood, and energy in seconds  
+- **Calendar View**: Visualize your week and spot emotional patterns  
+- **Feelings Tab**: Choose how you’re feeling and receive validating feedback  
+- **Calm Tools**: Use grounding techniques and sensory-friendly prompts  
+- **AI Support**: Chat with a Cohere-powered AI for emotional support  
+
+---
 
 ## AI Support Setup
 
