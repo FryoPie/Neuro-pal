@@ -64,8 +64,37 @@ const Sidebar = ({ activeTab, setActiveTab, isCollapsed, toggleSidebar }) => {
           
           {!isCollapsed && (
             <div className="sidebar-brand">
-              <h1>🧠 NeuroPal</h1>
+              <div className="brand-logo">
+                <img 
+                  src="/src/assets/Neuro-logo.png" 
+                  alt="NeuroPal Logo" 
+                  className="logo-image"
+                  onError={(e) => {
+                    // Fallback to emoji if image fails to load
+                    e.target.style.display = 'none';
+                    e.target.nextElementSibling.style.display = 'block';
+                  }}
+                />
+                <span className="logo-fallback" style={{ display: 'none' }}>🧠</span>
+                <h1>NeuroPal</h1>
+              </div>
               <p>Your gentle companion</p>
+            </div>
+          )}
+          
+          {isCollapsed && (
+            <div className="sidebar-brand-collapsed">
+              <img 
+                src="/src/assets/Neuro-logo.png" 
+                alt="NeuroPal Logo" 
+                className="logo-image-small"
+                onError={(e) => {
+                  // Fallback to emoji if image fails to load
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'block';
+                }}
+              />
+              <span className="logo-fallback-small" style={{ display: 'none' }}>🧠</span>
             </div>
           )}
         </div>

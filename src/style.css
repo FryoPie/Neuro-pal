@@ -1,26 +1,27 @@
 :root {
-  /* Sage and Stone Color Palette */
+  /* Sage Green Color Palette */
   --sage-primary: #8A9A5B;
   --sage-light: #A8B577;
   --sage-lighter: #C4D193;
   --sage-dark: #6B7A44;
   --sage-darker: #4C5530;
-  
+
+  /* Stone Gray Color Palette */
   --stone-primary: #928E85;
   --stone-light: #A8A49B;
   --stone-lighter: #BEB9B1;
   --stone-dark: #7A766E;
   --stone-darker: #625F58;
-  
-  /* Neutral Supporting Colors */
+
+  /* Neutral Colors */
   --cream-white: #FAF9F7;
   --warm-white: #F5F4F2;
   --soft-gray: #E8E6E3;
   --medium-gray: #D1CFC9;
   --charcoal: #3A3832;
   --deep-charcoal: #2A2621;
-  
-  /* Light theme colors using Sage and Stone */
+
+  /* Semantic Color Assignments */
   --bg-primary: var(--cream-white);
   --bg-secondary: var(--warm-white);
   --bg-tertiary: var(--soft-gray);
@@ -32,42 +33,42 @@
   --shadow-light: rgba(138, 154, 91, 0.08);
   --shadow-medium: rgba(138, 154, 91, 0.15);
   --accent-soft: rgba(138, 154, 91, 0.2);
-  
-  /* Primary accent colors */
+
+  /* Primary Colors */
   --primary-accent: var(--sage-primary);
   --primary-accent-light: var(--sage-light);
   --primary-accent-lighter: var(--sage-lighter);
   --primary-accent-dark: var(--sage-dark);
-  
-  /* Secondary accent colors */
+
+  /* Secondary Colors */
   --secondary-accent: var(--stone-primary);
   --secondary-accent-light: var(--stone-light);
   --secondary-accent-lighter: var(--stone-lighter);
   --secondary-accent-dark: var(--stone-dark);
-  
-  /* Status colors with sage/stone tints */
+
+  /* Status Colors */
   --success-color: #7A9A5B;
   --warning-color: #B5A05B;
   --error-color: #A5705B;
   --info-color: var(--sage-primary);
-  
-  /* Gradients using new palette */
+
+  /* Gradients */
   --gradient-primary: linear-gradient(135deg, var(--sage-primary), var(--stone-light));
   --gradient-secondary: linear-gradient(135deg, var(--sage-light), var(--stone-lighter));
   --gradient-calm: linear-gradient(135deg, var(--sage-lighter), var(--stone-light));
   --gradient-warm: linear-gradient(135deg, var(--stone-lighter), var(--sage-lighter));
-  
-  /* Sidebar dimensions */
+
+  /* Layout Variables */
   --sidebar-width-expanded: 280px;
   --sidebar-width-collapsed: 70px;
   --mobile-navbar-height: 70px;
-  
+
   /* Typography */
   --font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+/* Dark Theme */
 [data-theme="dark"] {
-  /* Dark Indigo/Purple Theme for Better Visibility */
   --bg-primary: #1A1B2E;
   --bg-secondary: #16213E;
   --bg-tertiary: #0F3460;
@@ -79,26 +80,26 @@
   --shadow-light: rgba(233, 69, 96, 0.15);
   --shadow-medium: rgba(233, 69, 96, 0.25);
   --accent-soft: rgba(233, 69, 96, 0.2);
-  
+
   --primary-accent: #E94560;
   --primary-accent-light: #FF6B7A;
   --primary-accent-dark: #C73650;
-  
+
   --secondary-accent: #533A7B;
   --secondary-accent-light: #7209B7;
   --secondary-accent-dark: #3E2A5C;
-  
+
   --success-color: #4ECDC4;
   --warning-color: #FFE66D;
   --error-color: #FF6B6B;
-  
-  /* Enhanced gradients for dark mode */
+
   --gradient-primary: linear-gradient(135deg, #E94560, #533A7B);
   --gradient-secondary: linear-gradient(135deg, #7209B7, #E94560);
   --gradient-calm: linear-gradient(135deg, #4ECDC4, #533A7B);
   --gradient-warm: linear-gradient(135deg, #FFE66D, #E94560);
 }
 
+/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -129,12 +130,12 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Desktop Layout */
+/* Desktop Layout Adjustments */
 @media (min-width: 769px) {
   .app.sidebar-expanded .main-content {
     margin-left: var(--sidebar-width-expanded);
   }
-  
+
   .app.sidebar-collapsed .main-content {
     margin-left: var(--sidebar-width-collapsed);
   }
@@ -197,11 +198,36 @@ body {
   transform: scale(1.05);
 }
 
+/* Logo Styles */
+.sidebar-brand {
+  flex: 1;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.logo-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px;
+}
+
+.logo-fallback {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
 .sidebar-brand h1 {
   color: white;
   font-size: 1.4rem;
   font-weight: 600;
-  margin-bottom: 0.25rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -211,7 +237,73 @@ body {
   font-weight: 400;
 }
 
-/* Sidebar Navigation */
+/* Collapsed Logo */
+.sidebar-brand-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.logo-image-small {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px;
+}
+
+.logo-fallback-small {
+  font-size: 1.3rem;
+  line-height: 1;
+  color: white;
+}
+
+/* Mobile Header Logo */
+.mobile-header {
+  text-align: center;
+}
+
+.mobile-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.mobile-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px;
+}
+
+.mobile-logo-fallback {
+  font-size: 1.2rem;
+  line-height: 1;
+  color: white;
+}
+
+.mobile-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.mobile-header p {
+  font-size: 0.85rem;
+  opacity: 0.95;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Navigation */
 .sidebar-nav {
   flex: 1;
   padding: 1rem 0;
@@ -333,7 +425,7 @@ body {
   font-weight: 400;
 }
 
-/* Mobile Overlay */
+/* Sidebar Overlay for Mobile */
 .sidebar-overlay {
   position: fixed;
   top: 0;
@@ -409,7 +501,7 @@ body {
   text-align: center;
 }
 
-/* Header Adjustments */
+/* App Header */
 .app-header {
   background: var(--gradient-secondary);
   padding: 1.5rem 2rem;
@@ -423,19 +515,6 @@ body {
   justify-content: space-between;
   align-items: center;
   max-width: 100%;
-}
-
-.mobile-header h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.mobile-header p {
-  font-size: 0.85rem;
-  opacity: 0.95;
-  font-weight: 400;
 }
 
 .header-actions {
@@ -464,7 +543,7 @@ body {
   transform: scale(1.05);
 }
 
-/* Content Area */
+/* App Content */
 .app-content {
   flex: 1;
   padding: 2rem;
@@ -472,7 +551,7 @@ body {
   max-height: calc(100vh - 100px);
 }
 
-/* RESPONSIVE EMOTION GRID - FULLY CENTERED */
+/* Mood Entry */
 .mood-entry {
   margin-bottom: 2rem;
 }
@@ -507,7 +586,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -530,7 +609,7 @@ body {
 
 .mood-button:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   border-color: var(--primary-accent);
 }
 
@@ -551,7 +630,7 @@ body {
   position: relative;
   z-index: 1;
   line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .mood-label {
@@ -565,7 +644,6 @@ body {
   color: var(--text-primary);
   transition: color 0.3s ease;
 }
-
 
 .add-custom-mood {
   border: 2px dashed var(--border-color);
@@ -596,7 +674,7 @@ body {
   justify-content: center;
   z-index: 2;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .remove-custom-mood:hover {
@@ -604,14 +682,14 @@ body {
   background: #d63031;
 }
 
-/* ENERGY TRACKER - BATTERY METAPHOR */
+/* Energy Tracker */
 .energy-tracker {
   margin-top: 2rem;
   padding: 2rem;
   background: var(--surface-soft);
   border-radius: 20px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .energy-tracker h3 {
@@ -675,7 +753,7 @@ body {
 .energy-button:hover {
   transform: translateY(-3px);
   border-color: var(--primary-accent);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .energy-button.active {
@@ -694,7 +772,7 @@ body {
   font-size: 1.8rem;
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .energy-label {
@@ -710,7 +788,7 @@ body {
   background: var(--bg-secondary);
   border-radius: 16px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .energy-display {
@@ -726,7 +804,7 @@ body {
   line-height: 1.4;
 }
 
-/* PRODUCTION-QUALITY CALM PAGE */
+/* Calm Tab */
 .calm-tab {
   text-align: center;
   max-width: 600px;
@@ -850,8 +928,12 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 6px 20px var(--shadow-medium); }
-  50% { box-shadow: 0 6px 20px var(--shadow-medium), 0 0 20px var(--accent-soft); }
+  0%, 100% {
+    box-shadow: 0 6px 20px var(--shadow-medium);
+  }
+  50% {
+    box-shadow: 0 6px 20px var(--shadow-medium), 0 0 20px var(--accent-soft);
+  }
 }
 
 .sound-status {
@@ -872,7 +954,7 @@ body {
   background: var(--surface-soft);
   border-radius: 20px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .invitation-content h3 {
@@ -915,7 +997,7 @@ body {
   font-style: italic;
 }
 
-/* PRODUCTION-QUALITY SUPPORT PAGE */
+/* Compassionate Chat */
 .compassionate-chat {
   max-width: 700px;
   margin: 0 auto;
@@ -928,7 +1010,7 @@ body {
   background: var(--surface-soft);
   border-radius: 20px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .chat-header h2 {
@@ -953,7 +1035,7 @@ body {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .chat-welcome {
@@ -1016,7 +1098,7 @@ body {
   border-radius: 18px;
   font-size: 0.95rem;
   line-height: 1.5;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .chat-message.user .message-content {
@@ -1074,13 +1156,13 @@ body {
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .send-button:hover:not(:disabled) {
   background: var(--primary-accent-light);
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .send-button:disabled {
@@ -1088,7 +1170,6 @@ body {
   cursor: not-allowed;
 }
 
-/* API Status */
 .api-status {
   font-size: 0.8rem;
   padding: 0.5rem 1rem;
@@ -1112,7 +1193,7 @@ body {
   border: 1px solid var(--warning-color);
 }
 
-/* Enhanced Calendar Styles */
+/* Calendar View */
 .calendar-view {
   max-width: 900px;
   margin: 0 auto;
@@ -1156,13 +1237,13 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: var(--font-primary);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .week-nav-button:hover:not(:disabled) {
   background: var(--primary-accent-light);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .week-nav-button:disabled {
@@ -1193,14 +1274,14 @@ body {
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   position: relative;
   overflow: hidden;
 }
 
 .calendar-day:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .calendar-day.today {
@@ -1296,14 +1377,13 @@ body {
   letter-spacing: 1px;
 }
 
-/* Enhanced Weekly Insights */
 .weekly-insights {
   background: var(--surface-soft);
   border-radius: 20px;
   padding: 2rem;
   margin-bottom: 2rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .weekly-insights h3 {
@@ -1327,13 +1407,13 @@ body {
   padding: 1.5rem;
   text-align: center;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
 .insight-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .insight-card h4 {
@@ -1402,13 +1482,13 @@ body {
   padding: 1.5rem;
   margin-bottom: 16px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
 .pattern-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .pattern-message {
@@ -1424,7 +1504,6 @@ body {
   line-height: 1.4;
 }
 
-/* Enhanced Wellness Report Button */
 .calendar-actions {
   text-align: center;
   margin-bottom: 2rem;
@@ -1441,7 +1520,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: var(--font-primary);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   margin-bottom: 1rem;
   display: inline-flex;
   align-items: center;
@@ -1451,7 +1530,7 @@ body {
 
 .wellness-report-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .wellness-report-button:disabled {
@@ -1495,13 +1574,12 @@ body {
   margin: 0 auto;
 }
 
-/* Enhanced Calendar Legend */
 .calendar-legend {
   background: var(--surface-soft);
   border-radius: 16px;
   padding: 1.5rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .calendar-legend h4 {
@@ -1549,10 +1627,7 @@ body {
   flex-shrink: 0;
 }
 
-/* Continue with existing component styles... */
-/* Component Styles with New Color Scheme */
-
-/* Progress Section */
+/* Routine Tab */
 .routine-header {
   display: flex;
   justify-content: space-between;
@@ -1576,7 +1651,7 @@ body {
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .streak-flame {
@@ -1612,7 +1687,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: shimmer 2s infinite;
 }
 
@@ -1628,7 +1703,6 @@ body {
   font-weight: 500;
 }
 
-/* Task Cards */
 .tasks-container {
   display: flex;
   flex-direction: column;
@@ -1642,13 +1716,13 @@ body {
   padding: 1.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .task-card:hover {
   border-color: var(--primary-accent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .task-card.completed {
@@ -1731,8 +1805,14 @@ body {
 }
 
 @keyframes celebrate {
-  0% { transform: scale(0.8) translateY(20px); opacity: 0; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
+  0% {
+    transform: scale(0.8) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Sensory Check-in */
@@ -1742,7 +1822,7 @@ body {
   background: var(--bg-tertiary);
   border-radius: 16px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .sensory-checkin h3 {
@@ -1820,14 +1900,14 @@ body {
   font-size: 1rem;
 }
 
-/* Enhanced Mood Reflection */
+/* Mood Reflection */
 .mood-reflection {
   margin-top: 2rem;
   padding: 2rem;
   background: var(--surface-soft);
   border-radius: 16px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .reflection-header {
@@ -1990,7 +2070,7 @@ body {
   margin: 0;
 }
 
-/* Mood Components */
+/* Mood Tab */
 .mood-tab h2 {
   color: var(--text-primary);
   margin-bottom: 2rem;
@@ -2007,7 +2087,7 @@ body {
   text-align: center;
   margin-bottom: 2rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .mood-display {
@@ -2036,7 +2116,7 @@ body {
   padding: 1rem 1.25rem;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .mood-time {
@@ -2045,7 +2125,7 @@ body {
   font-weight: 500;
 }
 
-/* Toast Notifications */
+/* Toast */
 .toast {
   position: fixed;
   top: 20px;
@@ -2370,59 +2450,59 @@ body {
   to { opacity: 1; }
 }
 
-/* Responsive Design Adjustments */
+/* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
     width: var(--sidebar-width-expanded) !important;
   }
-  
+
   .sidebar.expanded {
     transform: translateX(0);
   }
-  
+
   .main-content {
     margin-left: 0 !important;
     padding-bottom: var(--mobile-navbar-height);
   }
-  
+
   .app-content {
     padding: 1.5rem;
     max-height: calc(100vh - 80px - var(--mobile-navbar-height));
   }
-  
+
   .app-header {
     padding: 1.5rem;
   }
-  
+
   .mood-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     max-width: 100%;
   }
-  
+
   .mood-button {
     min-height: 100px;
     max-width: none;
   }
-  
+
   .calendar-grid {
     gap: 12px;
   }
-  
+
   .insights-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
+
   .energy-grid {
     gap: 12px;
   }
-  
+
   .energy-button {
     min-width: 70px;
   }
-  
+
   .sensory-grid {
     grid-template-columns: 1fr;
   }
@@ -2432,35 +2512,35 @@ body {
   .app-content {
     padding: 1rem;
   }
-  
+
   .mood-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
-  
+
   .mood-button {
     padding: 1rem;
     min-height: 90px;
   }
-  
+
   .mood-emoji {
     font-size: 2rem;
   }
-  
+
   .mood-label {
     font-size: 0.8rem;
   }
-  
+
   .breathing-circle {
     width: 150px;
     height: 150px;
   }
-  
+
   .breathing-animation {
     width: 120px;
     height: 120px;
   }
-  
+
   .toast {
     right: 15px;
     left: 15px;
@@ -2470,7 +2550,7 @@ body {
   .energy-grid {
     gap: 8px;
   }
-  
+
   .energy-button {
     min-width: 60px;
     padding: 0.75rem 0.5rem;
@@ -2484,7 +2564,7 @@ body {
     margin: 0.75rem;
     padding: 1.5rem;
   }
-  
+
   .calendar-grid {
     gap: 8px;
   }
@@ -2523,15 +2603,15 @@ body {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
   }
-  
+
   .calendar-header h2 {
     font-size: 1.5rem;
   }
-  
+
   .weekly-insights {
     padding: 1.5rem;
   }
-  
+
   .pattern-card {
     padding: 1rem;
   }
@@ -2552,44 +2632,42 @@ body {
   }
 }
 
-/* Tablet Adjustments */
 @media (min-width: 481px) and (max-width: 768px) {
   .mood-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
-  
+
   .mood-button {
     min-height: 110px;
   }
 }
 
-/* Desktop Adjustments */
 @media (min-width: 1024px) {
   .mood-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
-  
+
   .mood-button {
     min-height: 130px;
     max-width: 180px;
   }
-  
+
   .mood-emoji {
     font-size: 2.8rem;
   }
-  
+
   .mood-label {
     font-size: 1rem;
   }
-  
+
   .app-content {
     padding: 2.5rem;
   }
 }
 
-/* Accessibility and reduced motion */
+/* Accessibility and Motion Preferences */
 @media (prefers-reduced-motion: reduce) {
   .breathing-animation,
   .breathing-animation::after,
@@ -2601,7 +2679,7 @@ body {
   .pulse-glow {
     animation: none;
   }
-  
+
   .task-card:hover,
   .mood-button:hover,
   .sound-button:hover,
@@ -2611,13 +2689,13 @@ body {
   .nav-button:hover {
     transform: none;
   }
-  
+
   .toast {
     transition: opacity 0.3s ease;
   }
 }
 
-/* Focus styles for accessibility */
+/* Focus Styles for Accessibility */
 .nav-button:focus,
 .mobile-nav-button:focus,
 .task-checkbox:focus + .checkmark,
@@ -2641,23 +2719,20 @@ body {
   outline-offset: 2px;
 }
 
-/* High contrast mode support */
+/* High Contrast Support */
 @media (prefers-contrast: high) {
   .task-card,
   .mood-button,
   .energy-button,
   .sensory-button,
   .calendar-day,
-  .nav-button {
-    border-width: 3px;
-  }
-  
+  .nav-button,
   .checkmark {
     border-width: 3px;
   }
 }
 
-/* Dark theme emoji visibility enhancements */
+/* Dark Theme Specific Adjustments */
 [data-theme="dark"] .mood-emoji,
 [data-theme="dark"] .energy-emoji,
 [data-theme="dark"] .sensory-emoji {
@@ -2681,7 +2756,7 @@ body {
   border-color: rgba(255, 107, 107, 0.4);
 }
 
-/* Additional typing indicator styles */
+/* Chat Typing Indicator */
 .typing-indicator {
   display: flex;
   gap: 0.3rem;
@@ -2705,8 +2780,12 @@ body {
 }
 
 @keyframes typing {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-10px); }
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
 }
 
 .typing-message {
