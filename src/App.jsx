@@ -204,7 +204,20 @@ function App() {
           <div className="header-content">
             {isMobile && (
               <div className="mobile-header">
-                <h1>🧠 NeuroPal</h1>
+                <div className="mobile-brand">
+                  <img 
+                    src="/src/assets/Neuro-logo.png" 
+                    alt="NeuroPal Logo" 
+                    className="mobile-logo"
+                    onError={(e) => {
+                      // Fallback to emoji if image fails to load
+                      e.target.style.display = 'none';
+                      e.target.nextElementSibling.style.display = 'inline';
+                    }}
+                  />
+                  <span className="mobile-logo-fallback" style={{ display: 'none' }}>🧠</span>
+                  <h1>NeuroPal</h1>
+                </div>
                 <p>Your gentle companion</p>
               </div>
             )}
