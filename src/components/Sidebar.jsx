@@ -1,4 +1,6 @@
 import React from 'react';
+import neuroLogo from './assets/Neuro-logo.png'; // or '../assets/' based on path
+
 
 const Sidebar = ({ activeTab, setActiveTab, isCollapsed, toggleSidebar }) => {
   const navigationItems = [
@@ -66,7 +68,7 @@ const Sidebar = ({ activeTab, setActiveTab, isCollapsed, toggleSidebar }) => {
             <div className="sidebar-brand">
               <div className="brand-logo">
                 <img 
-                  src="/src/assets/Neuro-logo.png" 
+                  src={neuroLogo}
                   alt="NeuroPal Logo" 
                   className="logo-image"
                   onError={(e) => {
