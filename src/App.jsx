@@ -342,6 +342,10 @@ function App() {
           )}
         </main>
       </div>
+      <footer className="app-footer">
+        🚀 Built with <a href="https://bolt.new" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Bolt.new</a>
+      </footer>
+
 
       {showTransitionHelper && (
         <TransitionHelper 
