@@ -78,8 +78,16 @@ const Sidebar = ({ activeTab, setActiveTab, isCollapsed, toggleSidebar }) => {
                 <span className="logo-fallback" style={{ display: 'none' }}>🧠</span>
                 <h1>NeuroPal</h1>
               </div>
-              <p>Your gentle companion<br />
-                🚀 Built with <a href="https://bolt.new" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Bolt.new</a></p>
+              <p style={{ marginBottom: '0.25rem' }}>Your gentle companion</p>
+              <p style={{ fontSize: '0.85rem', opacity: 0.8 }}>
+                🚀 Built with <a 
+                  href="https://bolt.new" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  style={{ color: 'inherit', textDecoration: 'underline' }}>
+                  Bolt.new
+                </a>
+              </p>
             </div>
           )}
           
