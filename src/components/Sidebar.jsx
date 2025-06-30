@@ -1,5 +1,5 @@
 import React from 'react';
-import neuroLogo from './assets/Neuro-logo.png'; // or '../assets/' based on path
+import neuroLogo from '../assets/Neuro-logo.png'; // or '../assets/' based on path
 
 
 const Sidebar = ({ activeTab, setActiveTab, isCollapsed, toggleSidebar }) => {
