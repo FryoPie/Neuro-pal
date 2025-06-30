@@ -13,7 +13,7 @@ const MoodEntry = ({ mood, onSelect }) => {
   // Extended mood options including new ones
   const extendedMoodOptions = [
     ...MOOD_OPTIONS,
-    { emoji: "😌", label: "Relieved", color: "#7A9A8A" },
+    { emoji: "🙂", label: "Relieved", color: "#7A9A8A" },
     { emoji: "😶", label: "Numb", color: "#A8A49B" },
     { emoji: "🤯", label: "Overwhelmed", color: "#B58A7A" },
     { emoji: "😠", label: "Irritated", color: "#A5705B" },
